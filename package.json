@@ -1,9 +1,9 @@
 {
-    "description": "jp.coe.mod.twitter",
+    "description": "jp.coe.mod.mixi",
     "directories": {
         "lib": "."
     },
-    "main": "jp.coe.mod.twitter",
-    "name": "jp.coe.mod.twitter",
-    "version":"0.0.1"
+    "main": "jp.coe.mod.mixi",
+    "name": "jp.coe.mod.mixi",
+    "version":"0.1.1"
 }

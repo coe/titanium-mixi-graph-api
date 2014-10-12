@@ -51,7 +51,7 @@ var GraphApi = function(params) {
 	
 	this.searchPeople = function(config) {
 		config = mixin({
-			groupId: "@friends",
+			groupId: "@friends"
 		}, config, true);
 		
 		var url = String.format("search/people/%s", config.groupId);
@@ -141,8 +141,8 @@ var GraphApi = function(params) {
 	this.photoFriendAlbums = function(config) {
 		config = mixin({userId: "@me", groupId: "@friends"}, config, true);
 		var url = String.format("photo/albums/%s/%s", config.userId, config.groupId);
-		self.callApi("GET", url, config)
-	}
+		self.callApi("GET", url, config);
+	};
 	
 	this.photoMediaItems = function(config) {
 		config = mixin({userId: "@me", albumId: "@default", mediaItemId: ""}, config, true);
@@ -250,7 +250,7 @@ var GraphApi = function(params) {
 		config = mixin({userId: "@me", boxId: "@inbox", messageId: ""}, config, true);
 		var url = String.format("messages/%s/%s/%s", config.userId, config.boxId, config.messageId);
 		self.callApi("GET", url, config);
-	}
+	};
 	
 	this.messagesSend = function(config) {
 		config = mixin({userId: "@me"}, config, true);
@@ -453,7 +453,7 @@ var GraphApi = function(params) {
 	this.callApi = function(method, url, config) {
 		config = mixin({
 			autoAuthorize: self.autoAuthorize,
-			method: "GET",
+			method: "GET"
 		}, config || {}, true);
 		
 		if (isDefined(self.refreshToken)) {
@@ -465,7 +465,7 @@ var GraphApi = function(params) {
 					error: function(){
 						tryCall(config.error);
 					}
-				})
+				});
 			} else {
 				_callApi(method, url, config);
 			}
@@ -489,6 +489,7 @@ var GraphApi = function(params) {
 		var win = Ti.UI.createWindow();
 		
 		var web = Ti.UI.createWebView({
+			bottom:80,
 			url: _addQueryString("https://mixi.jp/connect_authorize.pl", {
 				client_id: self.consumerKey,
 				response_type: "code",
@@ -516,10 +517,16 @@ var GraphApi = function(params) {
 			var button = Ti.UI.createButton({
 				systemButton: Ti.UI.iPhone.SystemButton.CANCEL
 			});
-			button.addEventListener('click', function(){
+			var toolbar = Titanium.UI.iOS.createToolbar({
+			    items:[button],
+			    bottom:0,
+			    extendBackground:false
+			}); 
+			button.addEventListener('click', function() {
+				Ti.API.debug("とじる");
 				win.close();
 			});
-			win.rightNavButton = button;
+			win.add(toolbar);
 		}
 		win.add(web);
 		
@@ -540,7 +547,7 @@ var GraphApi = function(params) {
 		
 		var parameters = [];
 		for (var name in params) {
-			var value = (typeof params[name] == "object") ? params[name].toString() : params[name]
+			var value = (typeof params[name] == "object") ? params[name].toString() : params[name];
 			
 			parameters.push(String.format("%s=%s", name,Ti.Network.encodeURIComponent(value)));
 		}
@@ -768,7 +775,7 @@ function isDefined(object) {
 }
 
 function isFunction(proc) {
-	return typeof proc === "function"
+	return typeof proc === "function";
 }
 
 function tryCall(proc, args) {
@@ -789,4 +796,4 @@ function mixin(target, object, force) {
 
 GraphApi.version = "0.1.0";
 
-exports.GraphApi = GraphApi;
+module.exports = GraphApi;
